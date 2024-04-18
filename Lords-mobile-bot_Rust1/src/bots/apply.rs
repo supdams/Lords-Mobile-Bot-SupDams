@@ -19,7 +19,7 @@ impl Bot for ApplyBot {
         connection: &mut Connection,
         packet: PacketType,
     ) -> anyhow::Result<HandleStatus> {
-        println!("Got {:?}", packet);
+        println!("ApplyBot Got {:?}", packet);
         match packet {
             PacketType::ClientLoginAgain => return Ok(HandleStatus::Reconnect),
             PacketType::ClientServerTime { .. } => {

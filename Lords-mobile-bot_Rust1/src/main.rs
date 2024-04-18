@@ -26,6 +26,7 @@ use crate::bots::apply::ApplyBot;
 use crate::bots::autodevelopment_manual_hands::AutoManualHandsBot;
 use crate::connection::Connection;
 use crate::point::Point;
+use crate::util::get_color;
 use crate::util::get_ip;
 
 mod bot;
@@ -44,6 +45,71 @@ const ENCRYPTION_KEY: &str = "L*#)@!&8";
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
+    println!(
+        "{}",
+        get_color(
+            "                                                ",
+            true,
+            "blue",
+            "white"
+        )
+    );
+    println!(
+        "{}",
+        get_color(
+            "************************************************",
+            true,
+            "blue",
+            "white"
+        )
+    );
+    println!(
+        "{}",
+        get_color(
+            "*                                              *",
+            true,
+            "blue",
+            "white"
+        )
+    );
+    println!(
+        "{}",
+        get_color(
+            "*               SupDams Bot Rust               *",
+            true,
+            "blue",
+            "white"
+        )
+    );
+    println!(
+        "{}",
+        get_color(
+            "*                                              *",
+            true,
+            "blue",
+            "white"
+        )
+    );
+    println!(
+        "{}",
+        get_color(
+            "************************************************",
+            true,
+            "blue",
+            "white"
+        )
+    );
+    println!(
+        "{}",
+        get_color(
+            "                                                ",
+            true,
+            "blue",
+            "white"
+        )
+    );
+
+    println!("{}", get_color("abc", true, "green", "black"));
     let mut bots = Vec::<Pin<Box<dyn futures::Future<Output = ()>>>>::new();
     for line in std::fs::read_to_string("bots.dat")
         .expect("WHERE bots.dat")
@@ -57,12 +123,27 @@ async fn main() -> anyhow::Result<()> {
             .split('/')
             .map(|arg| arg.to_string().replace('\u{5555}', "/"))
             .collect::<Vec<String>>();
+        /*
+                println!("{}", get_color("TEST", true, "blue", ""));
+                println!("{}", get_color("TEST", true, "green", ""));
+                println!("{}", get_color("OK", false, "black", ""));
+                println!("{}", get_color("OK", false, "", ""));
+                println!("{}", get_color("TEST", true, "blue", "white"));
+                println!("{}", get_color("TEST", true, "green", ""));
+                println!("{}", get_color("OK", false, "black", ""));
+                println!("{}", get_color("OK", false, "", ""));
+                println!("{}", get_color("RED", true, "red", ""));
+                println!("{}", get_color("abc", true, "green", "black"));
+        */
+
+        println!("quel mode utiliser{line}");
         match args[0].as_str() {
             "HANDS" => bots.push(Box::pin(start_bot::<HandsBot, _>(
                 args[1].parse()?,
                 args[2].clone(),
                 (),
             ))),
+
             "REGISTER" => bots.push(Box::pin(register_bot(RegisterConfig {
                 name: generate_name().await,
                 kingdom: args[1].parse()?,
@@ -80,29 +161,37 @@ async fn main() -> anyhow::Result<()> {
                 args[2].clone(),
                 (),
             ))),
-            "DISCORD" => bots.push(Box::pin(start_bot::<DiscordBot, _>(
+            "DISCORD" => bots.push(Box::pin(start_bot::<AutoManualHandsBot, _>(
                 args[1].parse()?,
                 args[2].clone(),
-                DiscordConfig {
-                    auto_message_invite_link: args[3].clone(),
-                    chat_webhook_id: WebhookId(args[4].parse()?),
-                    chat_webhook_token: args[5].clone(),
-                    rally_channel_id: ChannelId(args[6].parse()?),
-                    rally_message_format: args[7].clone(),
-                    applications_channel_id: ChannelId(args[8].parse()?),
-                    applications_message_format: args[9].clone(),
-                    mobilization_channel_id: ChannelId(args[10].parse()?),
-                    mobilization_message_format: args[11].clone(),
-                    chat_channel_id: ChannelId(args[12].parse()?),
-                    token: args[13].clone(),
-                },
+                (),
             ))),
+            /*
+                        "DISCORD" => bots.push(Box::pin(start_bot::<DiscordBot, _>(
+                            args[1].parse()?,
+                            args[2].clone(),
+                            DiscordConfig {
+                                auto_message_invite_link: args[3].clone(),
+                                chat_webhook_id: WebhookId(args[4].parse()?),
+                                chat_webhook_token: args[5].clone(),
+                                rally_channel_id: ChannelId(args[6].parse()?),
+                                rally_message_format: args[7].clone(),
+                                applications_channel_id: ChannelId(args[8].parse()?),
+                                applications_message_format: args[9].clone(),
+                                mobilization_channel_id: ChannelId(args[10].parse()?),
+                                mobilization_message_format: args[11].clone(),
+                                chat_channel_id: ChannelId(args[12].parse()?),
+                                token: args[13].clone(),
+                            },
+                        ))),
+
+            */
             "APPLY" => bots.push(Box::pin(start_bot::<ApplyBot, _>(
                 args[1].parse()?,
                 args[2].clone(),
                 args[3].to_string(),
             ))),
-            _ => panic!("Unknown bot type"),
+            _ => panic!("Unknown bot type{line}"),
         }
     }
     let service = async {
@@ -137,9 +226,9 @@ where
     B::Config: Send + Sync,
     A: Into<String> + Clone,
 {
-    // println!("{igg_id} waiting for 90 seconds");
-    // tokio::time::sleep(Duration::from_secs(90)).await;
-    // println!("{igg_id} starting");
+    //println!("{igg_id} waiting for 90 seconds");
+    //tokio::time::sleep(Duration::from_secs(90)).await;
+    //println!("{igg_id} starting");
     loop {
         let server = get_server();
         let stream = TcpStream::connect(server).unwrap();
@@ -235,11 +324,11 @@ async fn register_bot(config: RegisterConfig) {
                 .map(char::from)
                 .collect::<String>()
         );
-        println!("{} : {}", email, password);
+        //println!("{} : {}", email, password);
         let response = client.get(format!("http://cgi.igg.com/public/igg_register?m_game_id=1051019902&email={0}&m_pass={1}&m_pass2={1}", email, password)).send().await.unwrap();
         let text = response.text().await.unwrap();
         let text = text.trim_end_matches(|c| c != '}');
-        println!("{}", text);
+        //println!("{}", text);
         let response: serde_json::Result<RegisterResponse> =
             serde_json::from_reader(Cursor::new(text));
         if response.is_err() {

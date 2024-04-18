@@ -22,7 +22,7 @@ impl Bot for HandsBot {
         connection: &mut Connection,
         packet: PacketType,
     ) -> anyhow::Result<HandleStatus> {
-        println!("{} got {:?}", self.igg_id, packet);
+        //println!("{} got {:?}", self.igg_id, packet);
         match packet {
             PacketType::ClientLoginAgain => return Ok(HandleStatus::Reconnect),
             PacketType::ClientSomebodyNeedsHelp {

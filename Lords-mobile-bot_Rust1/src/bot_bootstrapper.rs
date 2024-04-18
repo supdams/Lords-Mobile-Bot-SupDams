@@ -32,7 +32,7 @@ where
         connection: &mut Connection,
         packet: PacketType,
     ) -> anyhow::Result<HandleStatus> {
-        println!("Got {:?}", packet);
+        println!("BotBootstrapper Got {:?}", packet);
         return match packet {
             PacketType::ClientGuestLogIn {
                 ip,

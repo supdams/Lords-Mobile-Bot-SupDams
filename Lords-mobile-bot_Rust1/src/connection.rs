@@ -8,6 +8,8 @@ use std::net::{Shutdown, TcpStream};
 use std::time::SystemTime;
 use tokio::time::Duration;
 
+use crate::util::get_color;
+
 pub struct Connection {
     pub(crate) stream: TcpStream,
     pub(crate) seq_id: u32,
@@ -18,7 +20,11 @@ pub struct Connection {
 
 impl Connection {
     pub fn send_packet(&mut self, packet: PacketType, enc: bool) -> anyhow::Result<()> {
-        println!("Send {:?}", packet);
+        //println!("{}", get_color("Send {packet}", true, "blue", "white"));
+        //println!("quel mode utiliser{packet}");
+        //println!("Send {:?}", packet);
+        
+        //println!("{}", get_color("Connection send_packet", true, "blue", "white"));
         let bytes = packet.serialize(self)?;
         if enc {
             let protocol = &bytes[..2];
@@ -27,6 +33,13 @@ impl Connection {
             let mut packet = Vec::with_capacity(2 + data.len());
             packet.extend(protocol);
             packet.extend(data);
+            //let mut packet: Vec<u8>
+            //println!("send_packet packet{:?}", packet);
+            //println!("send_packet protocol{:?}", protocol);
+            //println!("quel mode utiliser{data::}");
+
+            //println!("send_packet data {data: Vec<u8>}");
+            //println!("Send Connection");
             self.send(packet)?;
         } else {
             self.send(bytes)?;
@@ -46,7 +59,7 @@ impl Connection {
             },
             false,
         )?;
-        println!("Connected to the bootstrap server");
+        //println!("Connected to the bootstrap server");
         Ok(())
     }
     pub(crate) fn connect_game(&mut self) -> anyhow::Result<()> {
@@ -90,23 +103,19 @@ impl Connection {
                     let mut buf = vec![0; size_with_prefix - 2];
                     if self.stream.read_exact(&mut buf).is_ok() {
                         match PacketType::deserialize(&buf, self.igg_id) {
-                            Ok(packet) => {
-                                match bot.handle_packet(&mut self, packet).await {
-                                    Ok(HandleStatus::Ok) => (),
-                                    Ok(HandleStatus::Reconnect) => {
-                                        return Ok(HandleStatus::Reconnect)
-                                    }
-                                    Ok(HandleStatus::Disconnect) => {
-                                        return Ok(HandleStatus::Disconnect)
-                                    }
-                                    Err(err) => {
-                                        // println!("[{}] Bot error: {}, {:02X?}", self.igg_id, err, buf);
-                                        return Err(err);
-                                    }
+                            Ok(packet) => match bot.handle_packet(&mut self, packet).await {
+                                Ok(HandleStatus::Ok) => (),
+                                Ok(HandleStatus::Reconnect) => return Ok(HandleStatus::Reconnect),
+                                Ok(HandleStatus::Disconnect) => {
+                                    return Ok(HandleStatus::Disconnect)
                                 }
-                            }
+                                Err(err) => {
+                                    println!("[{}] Bot error: {}, {:02X?}", self.igg_id, err, buf);
+                                    return Err(err);
+                                }
+                            },
                             Err(_error) => {
-                                // println!("Error deserializing: {}, {:02X?}", error, buf);
+                                //println!("Error deserializing: {}, {:02X?}", error, buf);
                             }
                         }
                     }

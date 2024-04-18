@@ -23,7 +23,7 @@ impl Bot for RegisterBot {
         connection: &mut Connection,
         packet: PacketType,
     ) -> anyhow::Result<HandleStatus> {
-        println!("Got {:?}", packet);
+      //  println!("Got {:?}", packet);
         match packet {
             PacketType::ClientServerTime { .. } => {
                 self.make_beat(15.0);

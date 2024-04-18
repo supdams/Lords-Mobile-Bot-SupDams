@@ -395,6 +395,7 @@ pub enum PacketType {
 impl PacketType {
     pub fn serialize(&self, connection: &mut Connection) -> anyhow::Result<Vec<u8>> {
         let mut packet = Vec::new();
+
         match self {
             PacketType::ServerGuestLogIn { igg_id, ass_key } => {
                 const CLIENT_VERSION: [i32; 3] = [0x4d, 0x02, PATCH_VERSION];
@@ -666,10 +667,16 @@ impl PacketType {
             }
         }
         Ok(packet)
+
+        //println!("PacketType{packet}");
     }
     pub fn deserialize(bytes: &[u8], igg_id: i64) -> anyhow::Result<PacketType> {
         let mut packet = Cursor::new(bytes.to_owned());
         let packet_id = packet.read_u16()?;
+
+        println!("packet_id{packet_id}");
+      //  println!("packet{packet.read_u16()}");
+
         match packet_id {
             0x03EB => {
                 let port = packet.read_i32()? as u16;

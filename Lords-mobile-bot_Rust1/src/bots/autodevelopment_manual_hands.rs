@@ -393,7 +393,7 @@ impl Bot for AutoManualHandsBot {
         connection: &mut Connection,
         packet: PacketType,
     ) -> anyhow::Result<HandleStatus> {
-        println!("{} got {:?}", self.igg_id, packet);
+        println!("{} AutoManualHandsBot got {:?}", self.igg_id, packet);
         match packet {
             PacketType::ClientLoginAgain => return Ok(HandleStatus::Reconnect),
             PacketType::ClientSomebodyNeedsHelp {
@@ -806,7 +806,7 @@ impl AutoManualHandsBot {
     pub fn heartbeat(&mut self, connection: &mut Connection) -> anyhow::Result<()> {
         self.make_beat(15.0);
         connection.send_packet(PacketType::ServerHeartBeat, true)?;
-        println!("{} > {}", self.igg_id, self.build_time - self.server_time);
+        //println!("{} > {}", self.igg_id, self.build_time - self.server_time);
         Ok(())
     }
 
