@@ -1,0 +1,51 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: CITY_OUTWARD
+// Assembly: Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+// MVID: 4857610B-EF43-43B0-884E-D10225C3A26E
+// Assembly location: C:\Users\supdams\Desktop\Assembly-CSharp.dll.dll
+
+#nullable disable
+public enum CITY_OUTWARD : byte
+{
+  CO_PLAYER,
+  CO_EMEMY,
+  CO_NPC,
+  CO_OUTWARD_03,
+  CO_OUTWARD_04,
+  CO_OUTWARD_05,
+  CO_OUTWARD_06,
+  CO_OUTWARD_07,
+  CO_OUTWARD_08,
+  CO_OUTWARD_09,
+  CO_OUTWARD_10,
+  CO_OUTWARD_11,
+  CO_OUTWARD_12,
+  CO_OUTWARD_13,
+  CO_OUTWARD_14,
+  CO_OUTWARD_15,
+  CO_OUTWARD_16,
+  CO_OUTWARD_17,
+  CO_OUTWARD_18,
+  CO_OUTWARD_19,
+  CO_OUTWARD_20,
+  CO_OUTWARD_21,
+  CO_OUTWARD_22,
+  CO_OUTWARD_23,
+  CO_OUTWARD_24,
+  CO_OUTWARD_25,
+  CO_OUTWARD_26,
+  CO_OUTWARD_27,
+  CO_OUTWARD_28,
+  CO_OUTWARD_29,
+  CO_OUTWARD_30,
+  CO_OUTWARD_31,
+  CO_OUTWARD_32,
+  CO_OUTWARD_33,
+  CO_OUTWARD_34,
+  CO_OUTWARD_35,
+  CO_OUTWARD_36,
+  CO_OUTWARD_37,
+  CO_OUTWARD_38,
+  CO_OUTWARD_39,
+  CO_MAX,
+}
